@@ -1,0 +1,135 @@
+h1,h5,h2 {
+    font-family: 'Merriweather', serif;
+    text-align: center;
+}
+
+h1,h5{
+    color: antiquewhite;
+}
+
+h1{
+    font-size: 35px;
+    margin-top: 20px;
+}
+
+#quote{
+    display:block;
+    position: relative;
+    background-color: rgb(168, 175, 175);
+    width: 90%;
+    height: auto;
+    border: 1px dotted black;
+    font-size:40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+    text-align: center;
+    font-style:oblique;
+}
+
+ul {
+    position: relative;
+    list-style: none;
+    height: 70%;
+}
+
+#card{
+    position:relative;
+    display:block;
+    width: 90%;
+    background-color: rgb(189, 189, 189);
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#lowerPart {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin-top: 30px;
+}
+
+.items{
+    font-size: 30px;
+    margin:20px;
+    text-align: center;
+}
+
+.items:hover{
+    background-color: antiquewhite;
+    cursor: pointer;
+}
+
+body{
+    background-image: url("../images/bkgrd.jpg");
+    position: relative;
+}
+
+.column{
+    float:right;
+}
+
+#col1{
+    width:40%;
+}
+#col2{
+    width:40%;
+}
+#col3{
+    width:20%;
+    display: flex;
+    flex-direction: column;
+}
+
+#clock{
+    font-size: 35px;
+    color: rgb(0, 255, 119);
+}
+.itemsR{
+    float:right;
+}
+
+#answerImage{
+    margin:10px;
+    border: 1px solid black;
+    width: 225px;
+    height:225px;
+    align-self: center;
+    opacity: 0.5;
+}
+
+button {
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    color: black;
+    border-radius: 8px;
+    border: 1px solid black;
+    margin-right: 10px;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.clickable:hover{
+    background-color: rgb(168, 175, 175);
+}
+.noClick:hover{
+    cursor: auto;
+}
+
+#tally{
+    margin-top: 40px;
+    margin-right: 10px;
+    display: flex;
+}
+
+#tally>img{
+    flex-direction: row;
+}

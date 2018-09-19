@@ -1,3 +1,4 @@
+// START of Data for the game
 var answerChoices = [
     ["George Harrison","John Lennon","Ringo Starr","Paul McCartney"],
     ["John F. Kennedy","Ronald Reagan","Martin Luther King","Bill Gates"],
@@ -29,8 +30,74 @@ var card = {
     answer: answerChoices,
     correctA: [1,0,2,0,2,1,1,2,0,1],
 }
+// END of Data for the game
 
-// An accurate timer based on clock
+var cardCounter=0;
+var correctAnswers = 0;
+var incorrectAnswers = 0;
+
+// Timer
 function timeClock(){
+    console.log("Ran Timer")
+    var x;
+    //if (c=1){
+        var startTimer=function(){
+            var timeAllowed = 15000;
+            x = setInterval(tenth,100);
+                function tenth(){
+                    if (timeAllowed>=0){
+                        var seconds = Math.floor(timeAllowed/1000);
+                        var centiSeconds = Math.floor(timeAllowed/100) - (seconds*10);
+                        $("#clock").text(seconds+":"+centiSeconds);
+                        timeAllowed=timeAllowed-100;
+                    } else {clearInterval(x)};   
+                }
+        };
+
+    // } else {
+    //         clearInterval(x);       
+    // }
+
+}
+
+// Function to load current card and start timer
+function loadCard(x){
+    var answerC=[];
+    for (i=0;i<4;i++){
+        answerC[i] = card.answer[x][i];
+    }
+    $("#quote").text(card.quote[x]);
+    $("#choice1").text(answerC[0]);
+    $("#choice2").text(answerC[1]);
+    $("#choice3").text(answerC[2]);
+    $("#choice4").text(answerC[3]);
+    var correct = $(card.correctA[x]);
+    //timeClock(1);
+    // start clock
+
+}
+
+// Function to stop timer and show wrong and correct answers
+
+
+
+// Function to check answer and increment correct/incorrect/unanswered, show pic of answer, and move to next card
+function checkAnswer(){
+    console.log("ran checkAnswer");
+    // stop the clock
+    //timeClock(0);
+    // show picture of answer
+    var src = "assets/images/"+cardCounter+".jpg";
+    $(answerImage).attr("src",src);
+    // if click correct answer, change text to correct
+
+    // if click incorrect answer, change text to incorrect
     
+}
+
+// Start playing
+function playGame(){
+    if (cardCounter<10){
+        loadCard(cardCounter);
+    } else {return};
 }

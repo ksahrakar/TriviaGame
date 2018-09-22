@@ -108,10 +108,9 @@ var resetTimer=function(){
     return;
 }
 
-// Disable start button
-function disableStart(){
-    $("#startButton").css("disabled",true);
-    return;
+// Hide start button
+function hideStart(){
+    $("#startButton").css("display","none");
 }
     
 
@@ -156,8 +155,6 @@ function loadCard(){
     $("#answerImage").attr("src",src);
     $("#answerImage").css("display", "none");
 
-    // reset timer and restart
-
     // Get out of function
     return;
 }
@@ -172,17 +169,13 @@ function showAnswers(){
     $(".checkIcon").css("display","inline-flex");
 
     // Determine if response correct or incorrect
-
+    validate();
 
     // Record score
     $("#rightAns").text(correctAnswers);
     $("#wrongAns").text(incorrectAnswers);
-
-
     return;
 }
-
-// Function to check wrong and right answers
 
 // Function to move forward to next quote with delay
 function moveOn(){
@@ -191,32 +184,44 @@ function moveOn(){
         cardCounter++;
         setTimeout(loadCard,3000);
         resetTimer();
-        
+        setTimeout(countDown,2999);   
     } else {return;}
     return;
 }
 
+function detectTimeUp(){
+    if (timeAllowed<0){
+        console.log("time up");
+        showAnswers();
+        moveOn();
+    }
+}
+
+function validate(){
+    if (timeAllowed>=0){
+        if (ans==card.correctA[cardCounter]){
+                    correctAnswers++
+                } else {
+                    incorrectAnswers++; 
+                };
+    }
+}
 
 $(document).ready(function() {
-
     $("#startButton").on("click",loadCard);
     $("#startButton").on("click",countDown);
-    $("#startButton").on("click", disableStart);
+    $("#startButton").on("click", hideStart);
 
+    $("li").click(function(){
+        ans = $(this).attr("value");
+    })
 
-    if (timeAllowed>=0){
-
-        $(".items").on("click",stopTimer);
-        $(".items").on("click",showAnswers);
-        $(".items").on("click",moveOn);
-        $("li").click(function(){
-            ans = $(this).attr("value");
-        })
-        if (ans==card.correctA[cardCounter]){
-            correctAnswers++
-        } else {incorrectAnswers++};
-    
-    
-    }
+    $(".items").on("click",stopTimer);
+    $(".items").on("click",showAnswers);
+    $(".items").on("click",moveOn);
+    detectTimeUp();
 
 });
+
+
+

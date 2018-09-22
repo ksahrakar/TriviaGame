@@ -149,3 +149,7 @@ button {
 .score{
     font-size:22px;
 }
+
+#startButton{
+    display:inline-block;
+}

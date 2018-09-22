@@ -208,7 +208,7 @@ $(document).ready(function() {
 
         $(".items").on("click",stopTimer);
         $(".items").on("click",showAnswers);
-        //$(".items").on("click",moveOn);
+        $(".items").on("click",moveOn);
         $("li").click(function(){
             ans = $(this).attr("value");
         })
@@ -218,9 +218,5 @@ $(document).ready(function() {
     
     
     }
-    
-
-
-
 
 });

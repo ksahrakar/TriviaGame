@@ -1,14 +1,14 @@
 // START of Data for the game
 var answerChoices = [
     ["George Harrison","John Lennon","Ringo Starr","Paul McCartney"],
-    ["John F. Kennedy","Ronald Reagan","Martin Luther King","Bill Gates"],
-    ["Dalai Lama","Socrates","Albert Einstein","Walt Whitman"],
-    ["Mae West", "Marilyn Monroe", "Kathryn Hepburn", "Gina Lollobrigida"],
-    ["Hugh Heffner","Donald Trump", "Plato", "Emily Dickinson"],
-    ["Johann Wolfgang von Goethe","Pablo Picasso","Winston Churchill","Mick Jagger"],
+    ["John F. Kennedy","Herbert Hoover","Martin Luther King","Bill Gates"],
+    ["Dalai Lama","Steve Jobs","Albert Einstein","Walt Whitman"],
+    ["Mae West", "Marilyn Monroe", "Audrey Hepburn", "Mick Jagger"],
+    ["Hugh Heffner","Sigmund Freud", "Plato", "Emily Dickinson"],
+    ["Neil Armstrong","Pablo Picasso","Winston Churchill","Mick Jagger"],
     ["Roy Orbison","Jim Morrison","Charles Schulz","Jimmi Hendrix"],
-    ["Isaac Asimov","Ray Bradbury","Jonathan Swift","Isaac Newton"],
-    ["Wayne Gretzky","Pele","LeBron James","Michael Jordan"],
+    ["William Shakespeare","Ray Bradbury","Jonathan Swift","Isaac Newton"],
+    ["Wayne Gretzky","Dirty Harry","LeBron James","Michael Jordan"],
     ["Ghandi","Lao Tzu","Buddha","Dalai Lama"]
 ];
 
@@ -28,76 +28,199 @@ var quotes = [
 var card = {
     quote: quotes,
     answer: answerChoices,
+    pictureURL:["0.jpg","1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg","9.jpg"],
     correctA: [1,0,2,0,2,1,1,2,0,1],
 }
 // END of Data for the game
 
+// Global variables
 var cardCounter=0;
 var correctAnswers = 0;
 var incorrectAnswers = 0;
+var timeAllowed = 15000;
+var x;
+var ans;
 
-// Timer
-function timeClock(){
-    console.log("Ran Timer")
-    var x;
-    //if (c=1){
-        var startTimer=function(){
-            var timeAllowed = 15000;
-            x = setInterval(tenth,100);
-                function tenth(){
-                    if (timeAllowed>=0){
-                        var seconds = Math.floor(timeAllowed/1000);
-                        var centiSeconds = Math.floor(timeAllowed/100) - (seconds*10);
-                        $("#clock").text(seconds+":"+centiSeconds);
-                        timeAllowed=timeAllowed-100;
-                    } else {clearInterval(x)};   
-                }
-        };
 
-    // } else {
-    //         clearInterval(x);       
-    // }
+// START of Reset the game
+function resetGame(){
+    cardCounter=0;
+    correctAnswers = 0;
+    incorrectAnswers = 0;
+    timeAllowed = 15000;
 
+    // reset starting position
+    $(".checkIcon").css("display","inline-flex");
+    $("#icon1").attr("src","./assets/images/wrongAns.png");
+    $("#icon2").attr("src","./assets/images/wrongAns.png");
+    $("#icon3").attr("src","./assets/images/wrongAns.png");
+    $("#icon4").attr("src","./assets/images/rightAns.png");
+
+    // reset picture
+    $("#answerImage").attr("src", "assets/images/q.jpg");
+
+    // reset quote
+    $("#quote").text("it depends upon what the meaning of the word is is");
+
+    // reset answers
+    $("#choice1").text("Ronald Reagan");
+    $("#choice2").text("Barrack Obama");
+    $("#choice3").text("Harry Truman");
+    $("#choice4").text("William Clinton");
+
+    // reset timer
+    resetTimer();
+    $("#clock").text("15.0");
+
+    // reset score
+    $("#rightAnswer").text("0");
+    $("#wrongAnswer").text("0");
+
+
+    // reset start button
+    $("#startButton").css("disabled",false);
+}
+// END of Reset the Game
+
+// Timer Function
+var countDown=function(){
+    x = setInterval(tenth,100);
+    function tenth(){
+        if (timeAllowed>=0){
+            var seconds = Math.floor(timeAllowed/1000);
+            var centiSeconds = Math.floor(timeAllowed/100) - (seconds*10);
+            $("#clock").text(seconds+"."+centiSeconds);
+            timeAllowed=timeAllowed-100;
+        } else {clearInterval(x); return;};  
+    }
+};  
+
+// Stop Timer
+var stopTimer=function(){
+    clearInterval(x);
+    return;
 }
 
-// Function to load current card and start timer
-function loadCard(x){
+// Reset Timer
+var resetTimer=function(){
+    timeAllowed = 15000;
+    $("#clock").text("15.0");
+    return;
+}
+
+// Disable start button
+function disableStart(){
+    $("#startButton").css("disabled",true);
+    return;
+}
+    
+
+// Function to load current card and reset timer
+function loadCard(){
+    var y = cardCounter;
+    // reset all icons and values
+    $(".checkIcon").css("display","none");
+    $("#icon1").attr("src","./assets/images/wrongAns.png");
+    $("#choice1").attr("value",false)
+    $("#icon2").attr("src","./assets/images/wrongAns.png");
+    $("#choice2").attr("value",false)
+    $("#icon3").attr("src","./assets/images/wrongAns.png");
+    $("#choice3").attr("value",false)
+    $("#icon4").attr("src","./assets/images/wrongAns.png");
+    $("#choice4").attr("value",false)
+
+    // reset picture
+    $("#answerImage").attr("src", "assets/images/q.jpg");
+
+    // put correct icon next to correct answer
     var answerC=[];
     for (i=0;i<4;i++){
-        answerC[i] = card.answer[x][i];
+        answerC[i] = card.answer[y][i];
+        if (card.correctA[y] == 0){$("#icon1").attr("src","./assets/images/rightAns.png");$("#choice1").attr("value",true)};
+        if (card.correctA[y] == 1){$("#icon2").attr("src","./assets/images/rightAns.png");$("#choice2").attr("value",true)};
+        if (card.correctA[y] == 2){$("#icon3").attr("src","./assets/images/rightAns.png");$("#choice3").attr("value",true)};
+        if (card.correctA[y] == 3){$("#icon4").attr("src","./assets/images/rightAns.png");$("#choice4").attr("value",true)};
     }
-    $("#quote").text(card.quote[x]);
+
+    // show new quote
+    $("#quote").text(card.quote[y]);
+
+    // show multiple answers for current quote
     $("#choice1").text(answerC[0]);
     $("#choice2").text(answerC[1]);
     $("#choice3").text(answerC[2]);
     $("#choice4").text(answerC[3]);
-    var correct = $(card.correctA[x]);
-    //timeClock(1);
-    // start clock
 
+    // load picture URL to HTML item
+    var src= "./assets/images/"+card.pictureURL[y];
+    $("#answerImage").attr("src",src);
+    $("#answerImage").css("display", "none");
+
+    // reset timer and restart
+
+    // Get out of function
+    return;
 }
-
-// Function to stop timer and show wrong and correct answers
-
-
 
 // Function to check answer and increment correct/incorrect/unanswered, show pic of answer, and move to next card
-function checkAnswer(){
-    console.log("ran checkAnswer");
-    // stop the clock
-    //timeClock(0);
+function showAnswers(){
+
     // show picture of answer
-    var src = "assets/images/"+cardCounter+".jpg";
-    $(answerImage).attr("src",src);
-    // if click correct answer, change text to correct
+    $("#answerImage").css("display", "block");
 
-    // if click incorrect answer, change text to incorrect
-    
+    // Show answers
+    $(".checkIcon").css("display","inline-flex");
+
+    // Determine if response correct or incorrect
+
+
+    // Record score
+    $("#rightAns").text(correctAnswers);
+    $("#wrongAns").text(incorrectAnswers);
+
+
+    return;
 }
 
-// Start playing
-function playGame(){
+// Function to check wrong and right answers
+
+// Function to move forward to next quote with delay
+function moveOn(){
+    console.log("moving on");
     if (cardCounter<10){
-        loadCard(cardCounter);
-    } else {return};
+        cardCounter++;
+        setTimeout(loadCard,3000);
+        resetTimer();
+        
+    } else {return;}
+    return;
 }
+
+
+$(document).ready(function() {
+
+    $("#startButton").on("click",loadCard);
+    $("#startButton").on("click",countDown);
+    $("#startButton").on("click", disableStart);
+
+
+    if (timeAllowed>=0){
+
+        $(".items").on("click",stopTimer);
+        $(".items").on("click",showAnswers);
+        //$(".items").on("click",moveOn);
+        $("li").click(function(){
+            ans = $(this).attr("value");
+        })
+        if (ans==card.correctA[cardCounter]){
+            correctAnswers++
+        } else {incorrectAnswers++};
+    
+    
+    }
+    
+
+
+
+
+});

@@ -12,6 +12,10 @@ h1{
     margin-top: 20px;
 }
 
+h5{
+    text-shadow: 1px 1px black;
+}
+
 #quote{
     display:block;
     position: relative;
@@ -22,9 +26,9 @@ h1{
     font-size:40px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 60px;
     text-align: center;
     font-style:oblique;
+    padding:10px;
 }
 
 ul {
@@ -41,7 +45,7 @@ ul {
     height: auto;
     margin-left: auto;
     margin-right: auto;
-
+    padding-top:40px;
 }
 
 #lowerPart {
@@ -98,6 +102,7 @@ body{
     height:225px;
     align-self: center;
     opacity: 0.5;
+    background-image: url("/assets/images/q.jpg");
 }
 
 button {
@@ -132,4 +137,15 @@ button {
 
 #tally>img{
     flex-direction: row;
+}
+
+.checkIcon{
+    float:right;
+    height: 30px;
+    width:30px;
+    display: inline-flex;
+}
+
+.score{
+    font-size:22px;
 }

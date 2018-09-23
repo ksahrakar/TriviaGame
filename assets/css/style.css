@@ -102,7 +102,6 @@ body{
     height:225px;
     align-self: center;
     opacity: 0.5;
-    background-image: url("/assets/images/q.jpg");
 }
 
 button {
@@ -152,4 +151,12 @@ button {
 
 #startButton{
     display:inline-block;
+}
+
+#picture{
+
+}
+
+#resetButton{
+    display:none;
 }

@@ -69,6 +69,7 @@ function resetGame(){
     $("#choice4").text("William Clinton");
 
     // reset timer
+    stopTimer();
     resetTimer();
     $("#clock").text("15.0");
 
@@ -78,12 +79,12 @@ function resetGame(){
 
 
     // reset start button
-    $("#startButton").css("disabled",false);
+    $("#startButton").css("display","block");
 }
 // END of Reset the Game
 
 // Timer Function
-var countDown=function(){
+function countDown(){
     x = setInterval(tenth,100);
     function tenth(){
         if (timeAllowed>=0){
@@ -91,18 +92,18 @@ var countDown=function(){
             var centiSeconds = Math.floor(timeAllowed/100) - (seconds*10);
             $("#clock").text(seconds+"."+centiSeconds);
             timeAllowed=timeAllowed-100;
-        } else {clearInterval(x); return;};  
+        }   
     }
 };  
 
 // Stop Timer
-var stopTimer=function(){
+function stopTimer(){
     clearInterval(x);
     return;
 }
 
 // Reset Timer
-var resetTimer=function(){
+function resetTimer(){
     timeAllowed = 15000;
     $("#clock").text("15.0");
     return;
@@ -114,46 +115,44 @@ function hideStart(){
 }
     
 
-// Function to load current card and reset timer
+// Function to load current card
 function loadCard(){
     var y = cardCounter;
-    // reset all icons and values
-    $(".checkIcon").css("display","none");
-    $("#icon1").attr("src","./assets/images/wrongAns.png");
-    $("#choice1").attr("value",false)
-    $("#icon2").attr("src","./assets/images/wrongAns.png");
-    $("#choice2").attr("value",false)
-    $("#icon3").attr("src","./assets/images/wrongAns.png");
-    $("#choice3").attr("value",false)
-    $("#icon4").attr("src","./assets/images/wrongAns.png");
-    $("#choice4").attr("value",false)
+    if(y<10){
+        // reset all icons and values
+        $(".checkIcon").css("display","none");
+        $("#icon1").attr("src","./assets/images/wrongAns.png");
+        $("#icon2").attr("src","./assets/images/wrongAns.png");
+        $("#icon3").attr("src","./assets/images/wrongAns.png");
+        $("#icon4").attr("src","./assets/images/wrongAns.png");
 
-    // reset picture
-    $("#answerImage").attr("src", "assets/images/q.jpg");
+        // reset picture
+        $("#answerImage").attr("src", "assets/images/q.jpg");
 
-    // put correct icon next to correct answer
-    var answerC=[];
-    for (i=0;i<4;i++){
-        answerC[i] = card.answer[y][i];
-        if (card.correctA[y] == 0){$("#icon1").attr("src","./assets/images/rightAns.png");$("#choice1").attr("value",true)};
-        if (card.correctA[y] == 1){$("#icon2").attr("src","./assets/images/rightAns.png");$("#choice2").attr("value",true)};
-        if (card.correctA[y] == 2){$("#icon3").attr("src","./assets/images/rightAns.png");$("#choice3").attr("value",true)};
-        if (card.correctA[y] == 3){$("#icon4").attr("src","./assets/images/rightAns.png");$("#choice4").attr("value",true)};
+        // put correct icon next to correct answer
+        var answerC=[];
+        for (i=0;i<4;i++){
+            answerC[i] = card.answer[y][i];
+            if (card.correctA[y] == 0){$("#icon1").attr("src","./assets/images/rightAns.png");};
+            if (card.correctA[y] == 1){$("#icon2").attr("src","./assets/images/rightAns.png");};
+            if (card.correctA[y] == 2){$("#icon3").attr("src","./assets/images/rightAns.png");};
+            if (card.correctA[y] == 3){$("#icon4").attr("src","./assets/images/rightAns.png");};
+        }
+
+        // show new quote
+        $("#quote").text(card.quote[y]);
+
+        // show multiple answers for current quote
+        $("#choice1").text(answerC[0]);
+        $("#choice2").text(answerC[1]);
+        $("#choice3").text(answerC[2]);
+        $("#choice4").text(answerC[3]);
+
+        // load picture URL to HTML item
+        var src= "./assets/images/"+card.pictureURL[y];
+        $("#answerImage").attr("src",src);
+        $("#answerImage").css("display", "none");
     }
-
-    // show new quote
-    $("#quote").text(card.quote[y]);
-
-    // show multiple answers for current quote
-    $("#choice1").text(answerC[0]);
-    $("#choice2").text(answerC[1]);
-    $("#choice3").text(answerC[2]);
-    $("#choice4").text(answerC[3]);
-
-    // load picture URL to HTML item
-    var src= "./assets/images/"+card.pictureURL[y];
-    $("#answerImage").attr("src",src);
-    $("#answerImage").css("display", "none");
 
     // Get out of function
     return;
@@ -169,11 +168,19 @@ function showAnswers(){
     $(".checkIcon").css("display","inline-flex");
 
     // Determine if response correct or incorrect
-    validate();
+    if (timeAllowed>=0){
+        if (ans==card.correctA[cardCounter]){
+                    correctAnswers++
+                } else {
+                    incorrectAnswers++; 
+                };
+    }
 
     // Record score
     $("#rightAns").text(correctAnswers);
+    $("#rightAns").append("  ");
     $("#wrongAns").text(incorrectAnswers);
+
     return;
 }
 
@@ -185,26 +192,8 @@ function moveOn(){
         setTimeout(loadCard,3000);
         resetTimer();
         setTimeout(countDown,2999);   
-    } else {return;}
+    }
     return;
-}
-
-function detectTimeUp(){
-    if (timeAllowed<0){
-        console.log("time up");
-        showAnswers();
-        moveOn();
-    }
-}
-
-function validate(){
-    if (timeAllowed>=0){
-        if (ans==card.correctA[cardCounter]){
-                    correctAnswers++
-                } else {
-                    incorrectAnswers++; 
-                };
-    }
 }
 
 $(document).ready(function() {
@@ -219,8 +208,7 @@ $(document).ready(function() {
     $(".items").on("click",stopTimer);
     $(".items").on("click",showAnswers);
     $(".items").on("click",moveOn);
-    detectTimeUp();
-
+    
 });
 
 
